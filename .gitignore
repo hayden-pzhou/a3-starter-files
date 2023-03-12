@@ -1,0 +1,6 @@
+traces
+*.ref
+*.o
+.vscode
+.DS*
+cmake-build*
