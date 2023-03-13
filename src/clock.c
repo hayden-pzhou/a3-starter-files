@@ -1,15 +1,31 @@
 #include <assert.h>
 
 #include "pagetable_generic.h"
+#include "sim.h"
 
 /* Page to evict is chosen using the CLOCK algorithm.
  * Returns the page frame number (which is also the index in the coremap)
  * for the page that is to be evicted.
  */
+
+static int hand;
+
 int
 clock_evict(void)
 {
-  assert(false);
+  assert(hand <= memsize);
+  while(true) {
+        struct frame* cur_frame = & coremap[hand];
+        if(cur_frame->is_exist) {
+            if(cur_frame->is_ref) {
+                cur_frame->is_ref = false;
+            }else {
+                cur_frame->is_exist = false;
+                return hand;
+            }
+        }
+        hand = hand + 1 % memsize;
+  }
   return -1;
 }
 
@@ -20,13 +36,19 @@ clock_evict(void)
 void
 clock_ref(int frame)
 {
+  hand = frame;
+  coremap[hand].is_ref = true;
+  
+
   (void)frame;
 }
 
 /* Initialize any data structures needed for this replacement algorithm. */
 void
 clock_init(void)
-{}
+{
+  hand = 0;
+}
 
 /* Cleanup any data structures created in clock_init(). */
 void

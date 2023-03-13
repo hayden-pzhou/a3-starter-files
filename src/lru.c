@@ -1,13 +1,11 @@
 #include <assert.h>
-#include "list.h"
 #include "pagetable_generic.h"
-
-#include "pagetable_generic.h"
+#include "sim.h"
+#include "pagetable.h"
 
 #define CACHE_CAPACITY 1024
 
-static struct list_head* cache;
-static unsigned int size;
+static int frame_head=0;
 
 /* Page to evict is chosen using the accurate LRU algorithm.
  * Returns the page frame number (which is also the index in the coremap)
@@ -17,11 +15,28 @@ int
 lru_evict(void)
 {
   // evict the tail node; add at head node
-  // int frame = container_of(cache->head.prev,pt_entry_t,frame);
-  int frame = cache->head.prev
-  list_del(cache->head.prev);
-  assert(false);
-  return -1;
+  struct frame head = coremap[frame_head];
+
+  struct frame tail = * head.prev;
+
+  if(&head == &tail){
+    // only head node
+    return head.pte->frame;
+  }
+
+  struct frame tail_pre = * tail.prev;
+  int frame = tail.pte->frame;
+
+  //remove the tail node
+
+  head.prev = & tail_pre;
+  tail_pre.next = &head;
+
+  tail.prev = NULL;
+  tail.next = NULL;
+  
+  // assert(false);
+  return frame;
 }
 
 /* This function is called on each access to a page to update any information
@@ -31,18 +46,44 @@ lru_evict(void)
 void
 lru_ref(int frame)
 {
-  // list_for_each()
-  list_for_each
-  (void)frame;
+  if(frame == frame_head) return;
+  struct frame node = coremap[frame];
+  struct frame head = coremap[frame_head];
+
+  struct frame node_pre = *node.prev;
+
+  //offload the node
+  node_pre.next = node_pre.next->next;
+  node.next->prev = &node_pre;
+  //add node in the front of the head
+  node.next = & head;
+  node.prev = & head.prev;
+  //link the head and node 
+  head.prev = & node;
+  //set the new head frame
+  frame_head = frame;
+  // (void)frame;
 }
 
 /* Initialize any data structures needed for this replacement algorithm. */
 void
 lru_init(void)
 {
-  cache =(list_head*)malloc(sizeof(list_head));
-  list_init(cache);
-  size = 0;
+  coremap[frame_head].next = &coremap[frame_head];
+  coremap[frame_head].prev = &coremap[frame_head];
+
+  /*
+  for(int i=1;i<memsize;i++){
+    coremap[i].prev = &coremap[i-1];
+    coremap[i].next = &coremap[i+1];
+  }
+
+  coremap[0].prev = &coremap[memsize-1];
+  coremap[0].next = &coremap[1];
+
+  coremap[memsize-1].prev = &coremap[memsize-2];
+  coremap[memsize-1].next = &coremap[0];
+  */
 }
 
 /* Cleanup any data structures created in lru_init(). */

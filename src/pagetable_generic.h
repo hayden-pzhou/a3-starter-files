@@ -35,6 +35,8 @@ struct frame
                           // stored in this frame
   struct frame* next;
   struct frame* prev;
+  bool is_ref; // add for clock replacement algorithms 
+  bool is_exist; // add for clock replacement algorithms 
 };
 
 extern struct frame* coremap;
