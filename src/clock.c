@@ -9,7 +9,7 @@
  * for the page that is to be evicted.
  */
 
-static int hand;
+static size_t hand;
 
 int
 clock_evict(void)

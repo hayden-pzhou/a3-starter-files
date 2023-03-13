@@ -3,4 +3,6 @@ traces
 *.o
 .vscode
 .DS*
+*.d
+swapfile.*
 cmake-build*

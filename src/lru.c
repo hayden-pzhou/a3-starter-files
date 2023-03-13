@@ -46,10 +46,12 @@ lru_evict(void)
 void
 lru_ref(int frame)
 {
+  assert(frame < memsize);
   if(frame == frame_head) return;
   struct frame node = coremap[frame];
   struct frame head = coremap[frame_head];
 
+  if(node.prev == NULL) return;
   struct frame node_pre = *node.prev;
 
   //offload the node
@@ -57,7 +59,7 @@ lru_ref(int frame)
   node.next->prev = &node_pre;
   //add node in the front of the head
   node.next = & head;
-  node.prev = & head.prev;
+  node.prev = head.prev;
   //link the head and node 
   head.prev = & node;
   //set the new head frame
@@ -69,21 +71,15 @@ lru_ref(int frame)
 void
 lru_init(void)
 {
-  coremap[frame_head].next = &coremap[frame_head];
-  coremap[frame_head].prev = &coremap[frame_head];
-
-  /*
   for(int i=1;i<memsize;i++){
     coremap[i].prev = &coremap[i-1];
     coremap[i].next = &coremap[i+1];
   }
-
   coremap[0].prev = &coremap[memsize-1];
   coremap[0].next = &coremap[1];
-
+  
   coremap[memsize-1].prev = &coremap[memsize-2];
   coremap[memsize-1].next = &coremap[0];
-  */
 }
 
 /* Cleanup any data structures created in lru_init(). */

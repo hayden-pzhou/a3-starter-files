@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS := -g3 -Wall -Wextra -Werror $(CFLAGS)
+CFLAGS := -g3 -Wall -Wextra  $(CFLAGS)
 LDFLAGS := $(LDFLAGS)
 
 .PHONY: all clean
