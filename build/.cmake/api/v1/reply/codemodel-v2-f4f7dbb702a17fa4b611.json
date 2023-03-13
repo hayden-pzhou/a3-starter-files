@@ -1,0 +1,128 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "benchmarks",
+					"jsonFile" : "directory-benchmarks-Debug-f9c487a9ea6598b2a7ae.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "benchmarks",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						4
+					]
+				},
+				{
+					"build" : "src",
+					"jsonFile" : "directory-src-Debug-b6cf2213fc5053b67c22.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src",
+					"targetIndexes" : 
+					[
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "csc369_a3",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "blocked::@099d4941661e36fe2606",
+					"jsonFile" : "target-blocked-Debug-ae2adc15abc3a8b10db0.json",
+					"name" : "blocked",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "matmul::@099d4941661e36fe2606",
+					"jsonFile" : "target-matmul-Debug-54a384e920ebc7e09368.json",
+					"name" : "matmul",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "repeatloop::@099d4941661e36fe2606",
+					"jsonFile" : "target-repeatloop-Debug-2d0af4abc841d3e01143.json",
+					"name" : "repeatloop",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "sim::@145eef247bfb46b6828c",
+					"jsonFile" : "target-sim-Debug-8beca2f596cd3bae486e.json",
+					"name" : "sim",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "simpleloop::@099d4941661e36fe2606",
+					"jsonFile" : "target-simpleloop-Debug-18ff57644dcbf4bccf4b.json",
+					"name" : "simpleloop",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/bigmath/a3-starter-files/build",
+		"source" : "/home/bigmath/a3-starter-files"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

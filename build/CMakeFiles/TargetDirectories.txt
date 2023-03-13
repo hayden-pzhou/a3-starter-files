@@ -1,0 +1,11 @@
+/home/bigmath/a3-starter-files/build/CMakeFiles/edit_cache.dir
+/home/bigmath/a3-starter-files/build/CMakeFiles/rebuild_cache.dir
+/home/bigmath/a3-starter-files/build/benchmarks/CMakeFiles/simpleloop.dir
+/home/bigmath/a3-starter-files/build/benchmarks/CMakeFiles/repeatloop.dir
+/home/bigmath/a3-starter-files/build/benchmarks/CMakeFiles/blocked.dir
+/home/bigmath/a3-starter-files/build/benchmarks/CMakeFiles/matmul.dir
+/home/bigmath/a3-starter-files/build/benchmarks/CMakeFiles/edit_cache.dir
+/home/bigmath/a3-starter-files/build/benchmarks/CMakeFiles/rebuild_cache.dir
+/home/bigmath/a3-starter-files/build/src/CMakeFiles/sim.dir
+/home/bigmath/a3-starter-files/build/src/CMakeFiles/edit_cache.dir
+/home/bigmath/a3-starter-files/build/src/CMakeFiles/rebuild_cache.dir

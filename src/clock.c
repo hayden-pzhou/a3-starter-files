@@ -1,6 +1,7 @@
 #include <assert.h>
 
 #include "pagetable_generic.h"
+#include "pagetable.h"
 #include "sim.h"
 
 /* Page to evict is chosen using the CLOCK algorithm.
@@ -35,12 +36,10 @@ clock_evict(void)
  */
 void
 clock_ref(int frame)
-{
-  hand = frame;
-  coremap[hand].is_ref = true;
-  
-
-  (void)frame;
+{ 
+	coremap[frame].is_ref = true;
+	coremap[frame].is_exist = true;
+	//hand = frame;
 }
 
 /* Initialize any data structures needed for this replacement algorithm. */

@@ -1,0 +1,57 @@
+[
+{
+  "directory": "/home/bigmath/a3-starter-files/build/benchmarks",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -o CMakeFiles/simpleloop.dir/simpleloop.c.o -c /home/bigmath/a3-starter-files/benchmarks/simpleloop.c",
+  "file": "/home/bigmath/a3-starter-files/benchmarks/simpleloop.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/benchmarks",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -O1 -o CMakeFiles/repeatloop.dir/repeatloop.c.o -c /home/bigmath/a3-starter-files/benchmarks/repeatloop.c",
+  "file": "/home/bigmath/a3-starter-files/benchmarks/repeatloop.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/benchmarks",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -O1 -o CMakeFiles/blocked.dir/blocked.c.o -c /home/bigmath/a3-starter-files/benchmarks/blocked.c",
+  "file": "/home/bigmath/a3-starter-files/benchmarks/blocked.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/benchmarks",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -O1 -o CMakeFiles/matmul.dir/matmul.c.o -c /home/bigmath/a3-starter-files/benchmarks/matmul.c",
+  "file": "/home/bigmath/a3-starter-files/benchmarks/matmul.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/src",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -MMD -std=gnu11 -o CMakeFiles/sim.dir/clock.c.o -c /home/bigmath/a3-starter-files/src/clock.c",
+  "file": "/home/bigmath/a3-starter-files/src/clock.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/src",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -MMD -std=gnu11 -o CMakeFiles/sim.dir/lru.c.o -c /home/bigmath/a3-starter-files/src/lru.c",
+  "file": "/home/bigmath/a3-starter-files/src/lru.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/src",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -MMD -std=gnu11 -o CMakeFiles/sim.dir/pagetable.c.o -c /home/bigmath/a3-starter-files/src/pagetable.c",
+  "file": "/home/bigmath/a3-starter-files/src/pagetable.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/src",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -MMD -std=gnu11 -o CMakeFiles/sim.dir/rand.c.o -c /home/bigmath/a3-starter-files/src/rand.c",
+  "file": "/home/bigmath/a3-starter-files/src/rand.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/src",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -MMD -std=gnu11 -o CMakeFiles/sim.dir/rr.c.o -c /home/bigmath/a3-starter-files/src/rr.c",
+  "file": "/home/bigmath/a3-starter-files/src/rr.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/src",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -MMD -std=gnu11 -o CMakeFiles/sim.dir/sim.c.o -c /home/bigmath/a3-starter-files/src/sim.c",
+  "file": "/home/bigmath/a3-starter-files/src/sim.c"
+},
+{
+  "directory": "/home/bigmath/a3-starter-files/build/src",
+  "command": "/usr/bin/gcc-11   -g -g3 -Wall -Wextra -Werror -MMD -std=gnu11 -o CMakeFiles/sim.dir/swap.c.o -c /home/bigmath/a3-starter-files/src/swap.c",
+  "file": "/home/bigmath/a3-starter-files/src/swap.c"
+}
+]
