@@ -1,0 +1,10 @@
+
+Hit count: 2
+Miss count: 6
+Clean evictions: 0
+Dirty evictions: 0
+Total references: 8
+Hit rate: 25.0000
+Miss rate: 75.0000
+Time to run simulation: 0.000044
+Memory used by simulation: 185904 bytes

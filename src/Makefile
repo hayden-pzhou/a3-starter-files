@@ -5,6 +5,10 @@ LDFLAGS := $(LDFLAGS)
 .PHONY: all clean
 
 all: sim
+	
+debug: CXXFLAGS += -DDEBUG -g
+debug: CCFLAGS += -DDEBUG -g
+debug: sim
 
 sim: rr.o rand.o lru.o clock.o pagetable.o sim.o swap.o
 	$(CC) $^ -o $@ $(LDFLAGS)

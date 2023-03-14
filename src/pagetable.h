@@ -18,9 +18,9 @@
 //   PDPT index    PD index     PT index    page offset
 
 #define PAGE_VALID 0x1  // Valid bit in pdp or pde or pte, set if in memory
-#define PAGE_DIRTY 0x2  // Dirty bit in pte, set if page has been modified
-#define PAGE_REF 0x4    // Reference bit in pte, set if page has been referenced
-#define PAGE_ONSWAP 0x8 // Set if page has been evicted to swap
+#define PAGE_DIRTY 0x2  // Dirty bit in pte, set if page has been modified // 1 dirty, 0 clean 
+#define PAGE_REF 0x4    // Reference bit in pte, set if page has been referenced // 1 ref. 0 not
+#define PAGE_ONSWAP 0x8 // Set if page has been evicted to swap // 1 on swap, 0 not 
 
 #define PT_SHIFT 12   // Leaves top 36 bits of vaddr
 #define PD_SHIFT 24   // Leaves top 24 bits of vaddr
@@ -40,7 +40,7 @@
 // 0 means is not set, 1 means is set
 #define CHECK_PAGE(p, f) (p->flag & f)
 #define SET_PAGE(p, f)   (p->flag |= f)
-#define UNSET_PAGE(p, f) (p->flag &= ~f)
+#define UNSET_PAGE(p, f) (p->flag &= ~f) 
 // These defines allow us to take advantage of the compiler's typechecking
 
 // Page directory pointer table entry (top-level)
@@ -62,6 +62,8 @@ typedef struct pt_entry_s
   off_t swap_offset;  // offset in swap file of vpage, if any
   unsigned char flag;
 } pt_entry_t;
+
+
 
 bool
 is_onswap(struct pt_entry_s* pte);

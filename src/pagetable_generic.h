@@ -31,12 +31,11 @@ struct pt_entry_s;
 struct frame
 {
   bool in_use;            // true if frame is allocated, false if frame is free
+  bool is_exist;       // add for clock
   struct pt_entry_s* pte; // Pointer back to pagetable entry (pte) for page
                           // stored in this frame
   struct frame* next;
   struct frame* prev;
-  bool is_ref; // add for clock replacement algorithms 
-  bool is_exist; // add for clock replacement algorithms 
 };
 
 extern struct frame* coremap;

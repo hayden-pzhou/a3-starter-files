@@ -1,4 +1,5 @@
 #include <assert.h>
+
 #include "pagetable_generic.h"
 #include "sim.h"
 #include "pagetable.h"
@@ -15,25 +16,30 @@ int
 lru_evict(void)
 {
   // evict the tail node; add at head node
+  int frame = -1;
   struct frame head = coremap[frame_head];
 
-  struct frame tail = * head.prev;
+  struct frame tail = *head.prev;
 
   if(&head == &tail){
     // only head node
-    return head.pte->frame;
+    return frame_head;
   }
 
   struct frame tail_pre = * tail.prev;
-  int frame = tail.pte->frame;
+
+  //return the tail frame
+  frame = tail.pte->frame;
 
   //remove the tail node
-
   head.prev = & tail_pre;
   tail_pre.next = &head;
-
   tail.prev = NULL;
   tail.next = NULL;
+
+
+  
+
   
   // assert(false);
   return frame;
@@ -46,16 +52,16 @@ lru_evict(void)
 void
 lru_ref(int frame)
 {
-  assert(frame < memsize);
   if(frame == frame_head) return;
   struct frame node = coremap[frame];
+  //current head
   struct frame head = coremap[frame_head];
 
   if(node.prev == NULL) return;
   struct frame node_pre = *node.prev;
 
   //offload the node
-  node_pre.next = node_pre.next->next;
+  node_pre.next = node.next;
   node.next->prev = &node_pre;
   //add node in the front of the head
   node.next = & head;
@@ -64,19 +70,19 @@ lru_ref(int frame)
   head.prev = & node;
   //set the new head frame
   frame_head = frame;
-  // (void)frame;
 }
 
 /* Initialize any data structures needed for this replacement algorithm. */
 void
 lru_init(void)
 {
-  for(int i=1;i<memsize;i++){
+  for(unsigned int i=1; i<memsize-1; i++){
     coremap[i].prev = &coremap[i-1];
     coremap[i].next = &coremap[i+1];
   }
-  coremap[0].prev = &coremap[memsize-1];
+
   coremap[0].next = &coremap[1];
+  coremap[0].prev = &coremap[memsize-1];
   
   coremap[memsize-1].prev = &coremap[memsize-2];
   coremap[memsize-1].next = &coremap[0];
