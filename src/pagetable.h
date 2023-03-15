@@ -58,9 +58,9 @@ typedef struct
 // Page table entry (3rd-level)
 typedef struct pt_entry_s
 {
+  unsigned char flag;
   unsigned int frame; // if valid bit == 1, physical frame holding vpage
   off_t swap_offset;  // offset in swap file of vpage, if any
-  unsigned char flag;
 } pt_entry_t;
 
 

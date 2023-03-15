@@ -10,22 +10,20 @@
  * for the page that is to be evicted.
  */
 
-static int hand;
+static unsigned int hand;
 
 int
 clock_evict(void)
 {
   // assert(hand <= memsize);
-  printf("here\n");
   while(true) {
         struct frame cur_frame = coremap[hand];
             if(cur_frame.is_exist){
               if(get_referenced(cur_frame.pte)){
                 set_referenced(cur_frame.pte,false);
                 }else {
-                  printf("evict frame %d\n ",hand);
                   cur_frame.is_exist=false;
-                    return hand;
+                  return hand;
              }
           }
         hand = hand + 1 % memsize;

@@ -1,12 +1,14 @@
 #include <assert.h>
 
+#include <stdio.h>
 #include "pagetable_generic.h"
 #include "sim.h"
 #include "pagetable.h"
+#include <stdlib.h>
 
 #define CACHE_CAPACITY 1024
 
-static int frame_head=0;
+struct frame * lru_head;
 
 /* Page to evict is chosen using the accurate LRU algorithm.
  * Returns the page frame number (which is also the index in the coremap)
@@ -17,30 +19,15 @@ lru_evict(void)
 {
   // evict the tail node; add at head node
   int frame = -1;
-  struct frame head = coremap[frame_head];
 
-  struct frame tail = *head.prev;
+  //empty
+  if(lru_head->prev == lru_head && lru_head->next == lru_head) return frame;
 
-  if(&head == &tail){
-    // only head node
-    return frame_head;
-  }
+  struct frame* tail = lru_head->prev;
+  tail->is_exist = false;
+  frame = tail->pte->frame;
+  frame_list_delete(tail);
 
-  struct frame tail_pre = * tail.prev;
-
-  //return the tail frame
-  frame = tail.pte->frame;
-
-  //remove the tail node
-  head.prev = & tail_pre;
-  tail_pre.next = &head;
-  tail.prev = NULL;
-  tail.next = NULL;
-
-
-  
-
-  
   // assert(false);
   return frame;
 }
@@ -52,40 +39,46 @@ lru_evict(void)
 void
 lru_ref(int frame)
 {
-  if(frame == frame_head) return;
-  struct frame node = coremap[frame];
-  //current head
-  struct frame head = coremap[frame_head];
+  struct frame* f = &coremap[frame];
 
-  if(node.prev == NULL) return;
-  struct frame node_pre = *node.prev;
+  //first offload the entry
+  if(f->is_exist)
+    frame_list_delete(f);
+  //append at head
+  frame_list_insert(f,lru_head,lru_head->next);
+  f->is_exist = true;
 
-  //offload the node
-  node_pre.next = node.next;
-  node.next->prev = &node_pre;
-  //add node in the front of the head
-  node.next = & head;
-  node.prev = head.prev;
-  //link the head and node 
-  head.prev = & node;
-  //set the new head frame
-  frame_head = frame;
+  return;
+  
 }
 
 /* Initialize any data structures needed for this replacement algorithm. */
 void
 lru_init(void)
 {
-  for(unsigned int i=1; i<memsize-1; i++){
+  lru_head =(struct frame*) malloc(sizeof(struct frame));
+  frame_list_init_head(lru_head);
+
+   for(unsigned int i=1; i<memsize-1; i++){
+    coremap[i].is_exist = false;
     coremap[i].prev = &coremap[i-1];
     coremap[i].next = &coremap[i+1];
   }
 
+  coremap[0].is_exist = false;
   coremap[0].next = &coremap[1];
   coremap[0].prev = &coremap[memsize-1];
   
+  coremap[memsize-1].is_exist=false;
   coremap[memsize-1].prev = &coremap[memsize-2];
   coremap[memsize-1].next = &coremap[0];
+
+  struct frame * head = &coremap[0];
+  for(int i=0;i<memsize;i++){
+    head = head->next; 
+  }
+
+  if(head==&coremap[0]) printf("trur----------------\n"); 
 }
 
 /* Cleanup any data structures created in lru_init(). */

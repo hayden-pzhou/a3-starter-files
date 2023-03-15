@@ -117,10 +117,8 @@ init_pagetable(void)
   
   pagetable = (pt_entry_t*) malloc (sizeof(pt_entry_t)*PTRS_PER_PT);
   memset(pagetable,0,sizeof(pt_entry_t)*PTRS_PER_PT);
-  for(int i=0;i<4096;i++){
+  for(int i=0;i<PTRS_PER_PT;i++){
     pagetable[i].swap_offset=INVALID_SWAP;
-    pagetable[i].flag=0;
-    set_referenced(&pagetable[i],false);
   }
 
 }
@@ -189,7 +187,7 @@ find_physpage(vaddr_t vaddr, char type)
     init_frame(pet->frame);
     int ret = swap_pagein(pet->frame,pet->swap_offset);
     if(ret!=0){
-      fprintf(stderr,"page swap in error!, partial read %d Bytes\n",ret);
+      fprintf(stderr,"page swap error!, partial read %d Bytes\n",ret);
       exit(-1);
     }
     ++miss_count;
@@ -251,15 +249,15 @@ is_dirty(struct pt_entry_s* pte){
 
 bool
 get_referenced(struct pt_entry_s* pte){
-  return CHECK_PAGE(pte,PAGE_REF);
+  return CHECK_PAGE(pte, PAGE_REF);
 }
 
 void
 set_referenced(struct pt_entry_s* pte, bool val){
   if(val)
-    SET_PAGE(pte,PAGE_REF);
+    SET_PAGE(pte, PAGE_REF);
   else
-    UNSET_PAGE(pte,PAGE_REF);
+    UNSET_PAGE(pte, PAGE_REF);
 }
 /**
  * @brief check page is swap
