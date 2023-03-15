@@ -1,1 +1,0 @@
-/usr/bin/gcc-11 -g CMakeFiles/matmul.dir/matmul.c.o -o matmul 

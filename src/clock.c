@@ -26,7 +26,7 @@ clock_evict(void)
                   return hand;
              }
           }
-        hand = hand + 1 % memsize;
+             hand = hand + 1 % memsize;
       }
 }
 
@@ -38,6 +38,7 @@ void
 clock_ref(int frame)
 { 
 	// coremap[frame].is_ref = true;
+  coremap[frame].is_exist = true;
   set_referenced(coremap[frame].pte,true);
 
 }
@@ -46,6 +47,9 @@ clock_ref(int frame)
 void
 clock_init(void)
 {
+  for(size_t i=0;i<memsize;i++){
+    coremap[i].is_exist = false;
+  }
   hand = 0;
 }
 

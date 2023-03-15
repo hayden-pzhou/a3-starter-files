@@ -6,3 +6,5 @@ traces
 *.d
 swapfile.*
 cmake-build*
+benchmarks
+build

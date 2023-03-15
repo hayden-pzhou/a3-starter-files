@@ -172,9 +172,6 @@ find_physpage(vaddr_t vaddr, char type)
 
   pt_entry_t *pet = &pagetable[pde+pt_entry_i];
 
-  // fprintf(stdout,"vaddr: %ld, pdpt: %d, pd: %d, pt: %d\n", vaddr, pdpt_entry_i, pd_entry_i, pt_entry_i);
-  // fprintf(stdout,"pdp:  %ld, pde: %ld, pet: %d\n", pdp, pde, pet->frame);
-
   if(!is_valid(pet)&&!is_onswap(pet)){
     // not valid and not on the swap file, first time to reference, set page dirty
     ++miss_count;
@@ -202,8 +199,6 @@ find_physpage(vaddr_t vaddr, char type)
     SET_PAGE(pet,PAGE_DIRTY);
   }
 
-  ref_count++;
-
   // Make sure that pte is marked valid and referenced. Also mark it
   // dirty if the access type indicates that the page will be written to.
   // (Note that a page should be marked DIRTY when it is first accessed,
@@ -212,6 +207,7 @@ find_physpage(vaddr_t vaddr, char type)
   // Call replacement algorithm's ref_func for this page.
   assert(frame != -1);
   ref_func(frame);
+  ref_count++;
 
   // Return pointer into (simulated) physical memory at start of frame
   return &physmem[frame * SIMPAGESIZE];
@@ -249,11 +245,19 @@ is_dirty(struct pt_entry_s* pte){
 
 bool
 get_referenced(struct pt_entry_s* pte){
+  if(pte==NULL){
+    fprintf(stderr,"pte is not valid point\n");
+    exit(-1);
+  }
   return CHECK_PAGE(pte, PAGE_REF);
 }
 
 void
 set_referenced(struct pt_entry_s* pte, bool val){
+  if(pte==NULL){
+    fprintf(stderr,"pte is not valid point\n");
+    exit(-1);
+  }
   if(val)
     SET_PAGE(pte, PAGE_REF);
   else

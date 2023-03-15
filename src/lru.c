@@ -73,12 +73,6 @@ lru_init(void)
   coremap[memsize-1].prev = &coremap[memsize-2];
   coremap[memsize-1].next = &coremap[0];
 
-  struct frame * head = &coremap[0];
-  for(int i=0;i<memsize;i++){
-    head = head->next; 
-  }
-
-  if(head==&coremap[0]) printf("trur----------------\n"); 
 }
 
 /* Cleanup any data structures created in lru_init(). */
