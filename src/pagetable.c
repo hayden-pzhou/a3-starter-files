@@ -73,16 +73,22 @@ allocate_frame(pt_entry_t* pte)
         fprintf(stderr, "dirty page swapin error!, frame id: %d, swap offset %ld\n", coremap[frame].pte->frame, coremap[frame].pte->swap_offset);
         exit(0);
       }
-      }else {
+      }
+      /*
+      else if(!is_dirty(coremap[frame].pte)&&!is_onswap()){
+
+      }
+      */
+      else {
         ++evict_clean_count;
       }
     // page is no longer valid, it is evicted
     set_frame_valid(coremap[frame].pte,false);
-    UNSET_PAGE(coremap[frame].pte,PAGE_DIRTY);
+    // do we need to reset a swapout page to clean?
+    // UNSET_PAGE(coremap[frame].pte,PAGE_DIRTY);
   }
 
   // set new frame valid and clean
-  set_frame_valid(pte,true);
   UNSET_PAGE(pte,PAGE_DIRTY);
   pte->frame = frame;
   
@@ -111,9 +117,15 @@ init_pagetable(void)
   //init the third levels page entry pointer
   pdpt_list = (pdpt_entry_t*) malloc (sizeof(pdpt_entry_t)*PTRS_PER_PDPT);
   memset(pdpt_list,0,sizeof(pdpt_entry_t)*PTRS_PER_PDPT);
+  for(int i=0;i<PTRS_PER_PDPT;i++){
+    pdpt_list[i].pdp = i;
+  }
 
   pd_list = (pd_entry_t*) malloc (sizeof(pd_entry_t)*PTRS_PER_PD);
   memset(pd_list,0,sizeof(pd_entry_t*)*PTRS_PER_PD);
+  for(int i=0;i<PTRS_PER_PD;i++){
+    pd_list[i].pde = i;
+  }
   
   pagetable = (pt_entry_t*) malloc (sizeof(pt_entry_t)*PTRS_PER_PT);
   memset(pagetable,0,sizeof(pt_entry_t)*PTRS_PER_PT);
@@ -175,9 +187,11 @@ find_physpage(vaddr_t vaddr, char type)
   if(!is_valid(pet)&&!is_onswap(pet)){
     // not valid and not on the swap file, first time to reference, set page dirty
     ++miss_count;
+    
     frame = allocate_frame(pet);
     init_frame(pet->frame); //allocate a frame from
     SET_PAGE(pet,PAGE_DIRTY);
+    set_frame_valid(pet,true);
   }else if(!is_valid(pet)&&is_onswap(pet)){
     // not valid but on the swapfile, allocated a frame and swapin
     frame = allocate_frame(pet);
@@ -187,12 +201,13 @@ find_physpage(vaddr_t vaddr, char type)
       fprintf(stderr,"page swap error!, partial read %d Bytes\n",ret);
       exit(-1);
     }
+    set_frame_valid(pet,true);
     ++miss_count;
   }else {
     // hit
     hit_count++;
   }
-
+  ref_count++;
   frame = pet->frame;
   
   if ((type == 'S') || (type == 'M')) {
@@ -207,7 +222,7 @@ find_physpage(vaddr_t vaddr, char type)
   // Call replacement algorithm's ref_func for this page.
   assert(frame != -1);
   ref_func(frame);
-  ref_count++;
+
 
   // Return pointer into (simulated) physical memory at start of frame
   return &physmem[frame * SIMPAGESIZE];
@@ -216,6 +231,10 @@ find_physpage(vaddr_t vaddr, char type)
 void
 print_pagetable(void)
 {
+  for(size_t i=0; i< memsize;i++){
+    fprintf(stdout,"page entry:%ld, page is in use: %d, pte->flag %c, pte phisical frame %d, pte swapoffset %ld"
+                ,i,coremap[i].in_use,coremap[i].pte->flag,coremap[i].pte->frame,coremap[i].pte->swap_offset);
+  }
 }
 
 void
@@ -245,23 +264,15 @@ is_dirty(struct pt_entry_s* pte){
 
 bool
 get_referenced(struct pt_entry_s* pte){
-  if(pte==NULL){
-    fprintf(stderr,"pte is not valid point\n");
-    exit(-1);
-  }
-  return CHECK_PAGE(pte, PAGE_REF);
+  return CHECK_PAGE(pte,PAGE_REF);
 }
 
 void
 set_referenced(struct pt_entry_s* pte, bool val){
-  if(pte==NULL){
-    fprintf(stderr,"pte is not valid point\n");
-    exit(-1);
-  }
   if(val)
-    SET_PAGE(pte, PAGE_REF);
+    SET_PAGE(pte,PAGE_REF);
   else
-    UNSET_PAGE(pte, PAGE_REF);
+    UNSET_PAGE(pte,PAGE_REF);
 }
 /**
  * @brief check page is swap
@@ -277,7 +288,7 @@ is_onswap(struct pt_entry_s* pte){
 
 void set_frame_valid(struct pt_entry_s* pte,bool val){
   if(val){
-    SET_PAGE(pte ,PAGE_VALID);
+    SET_PAGE(pte,PAGE_VALID);
     }else{
     UNSET_PAGE(pte,PAGE_VALID);
   }

@@ -69,6 +69,5 @@ bool
 is_onswap(struct pt_entry_s* pte);
 
 void set_frame_valid(struct pt_entry_s* pte,bool val);
-bool is_frame_valid(struct pt_entry_s* pte);
 
 #endif /* CSC369_PAGETABLE_H */
